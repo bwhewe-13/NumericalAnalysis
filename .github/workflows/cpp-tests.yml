@@ -1,0 +1,22 @@
+name: C++ Tests
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  catch2:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure CMake
+        run: cmake -S . -B build/cpp-tests -DBUILD_TESTING=ON -DBUILD_PYTHON_BINDINGS=OFF
+
+      - name: Build Catch2 test target
+        run: cmake --build build/cpp-tests --target test_root_approximation_cpp
+
+      - name: Run C++ tests with CTest
+        run: ctest --test-dir build/cpp-tests --output-on-failure -R test_root_approximation_cpp

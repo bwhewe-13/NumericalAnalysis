@@ -1,0 +1,27 @@
+[build-system]
+requires = ["scikit-build-core", "pybind11"]
+build-backend = "scikit_build_core.build"
+
+[project]
+name = "numeric"
+version = "0.1.0"
+description = "Algorithms from Numerical Analysis (9th Edition) by Burden and Faires, implemented in C++ with Python bindings."
+readme = "README.md"
+
+[project.urls]
+Homepage = "https://github.com/bwhewe-13/NumericalAnalysis"
+Repository = "https://github.com/bwhewe-13/NumericalAnalysis"
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=6.0",
+	"pytest-cov",
+	"black",
+	"isort",
+	"flake8",
+	"pre-commit",
+]
+
+[tool.scikit-build]
+build-dir = "build/{wheel_tag}"
+wheel.packages = ["python/numeric"]

@@ -1,0 +1,45 @@
+repos:
+  - repo: https://github.com/psf/black
+    rev: 24.10.0
+    hooks:
+      - id: black
+        stages: [pre-push]
+
+  - repo: https://github.com/PyCQA/isort
+    rev: 5.13.2
+    hooks:
+      - id: isort
+        stages: [pre-push]
+        args: ["--check-only", "--profile", "black"]
+
+  - repo: https://github.com/PyCQA/flake8
+    rev: 7.1.1
+    hooks:
+      - id: flake8
+        stages: [pre-push]
+
+  - repo: local
+    hooks:
+      - id: pytest-cov
+        name: pytest-cov
+        entry: /home/bwhewell/anaconda3/envs/ml/bin/python -m pytest --cov=numeric --cov-report=term-missing
+        language: system
+        pass_filenames: false
+        always_run: true
+        stages: [pre-push]
+
+      - id: doxygen-check
+        name: doxygen-check
+        entry: python3 scripts/check_doxygen.py
+        language: system
+        pass_filenames: false
+        always_run: true
+        stages: [pre-push]
+
+      - id: catch2-ctest
+        name: catch2-ctest
+        entry: bash scripts/run_cpp_tests.sh
+        language: system
+        pass_filenames: false
+        always_run: true
+        stages: [pre-push]
