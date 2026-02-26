@@ -120,8 +120,8 @@ def main() -> int:
 
     if all_issues:
         print(
-            "Doxygen check failed. Add a /** ... */ comment directly above each "
-            "C++ function declaration/definition."
+            "Doxygen check failed. Add a /** ... */ comment directly above each"
+            " C++ function declaration/definition."
         )
         for rel, line_no, signature in all_issues:
             print(f" - {rel}:{line_no} -> {signature}")
