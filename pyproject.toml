@@ -12,6 +12,11 @@ dependencies = [
 	"numpy",
 ]
 
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = "-ra -q --cov=numeric --cov-report=html --cov-report=xml"
+testpaths = ["tests"]
+
 [project.urls]
 Homepage = "https://github.com/bwhewe-13/NumericalAnalysis"
 Repository = "https://github.com/bwhewe-13/NumericalAnalysis"

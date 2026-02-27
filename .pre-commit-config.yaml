@@ -1,6 +1,20 @@
 exclude: ^third_party/
 
 repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: check-yaml
+        stages: [pre-push]
+      - id: end-of-file-fixer
+        stages: [pre-push]
+      - id: trailing-whitespace
+        stages: [pre-push]
+      - id: check-merge-conflict
+        stages: [pre-push]
+      - id: check-added-large-files
+        stages: [pre-push]
+
   - repo: https://github.com/psf/black
     rev: 24.10.0
     hooks:
@@ -22,14 +36,6 @@ repos:
 
   - repo: local
     hooks:
-      - id: pytest-cov
-        name: pytest-cov
-        entry: /home/bwhewell/anaconda3/envs/ml/bin/python -m pytest --cov=numeric --cov-report=term-missing
-        language: system
-        pass_filenames: false
-        always_run: true
-        stages: [pre-push]
-
       - id: doxygen-check
         name: doxygen-check
         entry: python3 scripts/check_doxygen.py

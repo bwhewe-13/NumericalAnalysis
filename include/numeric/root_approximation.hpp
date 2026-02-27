@@ -2,7 +2,7 @@
 #include <functional>
 
 /**
- * @brief Approximate a root of f(x) = 0 using the bisection method. Algorithm 
+ * @brief Approximate a root of f(x) = 0 using the bisection method. Algorithm
  * 2.1 in "Numerical Analysis".
  *
  * @param func Continuous function f(x).
@@ -13,9 +13,9 @@
  * @return Approximate root within the interval.
  */
 double bisection(
-    const std::function<double(double)>& func, 
-    double a, 
-    double b, 
+    const std::function<double(double)>& func,
+    double a,
+    double b,
     int MAX_ITERS,
     double TOL
 );
@@ -23,7 +23,7 @@ double bisection(
 /**
  * @brief Approximate a root of f(x) = 0 using the fixed point iteration method.
  * Algorithm 2.2 in "Numerical Analysis".
- * 
+ *
  * @param func Continuous function f(x).
  * @param x0 Initial approximation.
  * @param MAX_ITERS Maximum number of iterations.
