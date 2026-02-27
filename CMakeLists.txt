@@ -11,7 +11,38 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 option(BUILD_PYTHON_BINDINGS "Build pybind11 extension module" ON)
 
 if(BUILD_PYTHON_BINDINGS)
-    find_package(pybind11 REQUIRED)
+    set(Python3_FIND_VIRTUALENV FIRST)
+    find_package(Python3 COMPONENTS Interpreter Development.Module REQUIRED)
+
+    if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/third_party/pybind11/CMakeLists.txt")
+        add_subdirectory(third_party/pybind11)
+    else()
+        if(Python3_Interpreter_FOUND)
+            execute_process(
+                COMMAND "${Python3_EXECUTABLE}" -c "import pybind11; print(pybind11.get_cmake_dir())"
+                RESULT_VARIABLE _pybind11_query_result
+                OUTPUT_VARIABLE _pybind11_cmake_dir
+                OUTPUT_STRIP_TRAILING_WHITESPACE
+                ERROR_QUIET
+            )
+
+            if(_pybind11_query_result EQUAL 0 AND _pybind11_cmake_dir)
+                get_filename_component(_pybind11_prefix "${_pybind11_cmake_dir}/../../.." ABSOLUTE)
+                list(PREPEND CMAKE_PREFIX_PATH "${_pybind11_prefix}")
+                set(pybind11_DIR "${_pybind11_cmake_dir}" CACHE PATH "Path to pybind11 CMake config")
+            endif()
+        endif()
+
+        find_package(pybind11 CONFIG QUIET)
+        if(NOT pybind11_FOUND)
+            FetchContent_Declare(
+                pybind11
+                GIT_REPOSITORY https://github.com/pybind/pybind11.git
+                GIT_TAG v2.13.6
+            )
+            FetchContent_MakeAvailable(pybind11)
+        endif()
+    endif()
 
     pybind11_add_module(root_approximation
         src/bindings/root_approximation.cpp
@@ -22,7 +53,11 @@ if(BUILD_PYTHON_BINDINGS)
         PUBLIC
             $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
             $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
+        PRIVATE
+            ${Python3_INCLUDE_DIRS}
     )
+
+    target_link_libraries(root_approximation PRIVATE Python3::Module)
 
     install(TARGETS root_approximation DESTINATION numeric)
 endif()

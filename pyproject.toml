@@ -7,6 +7,10 @@ name = "numeric"
 version = "0.1.0"
 description = "Algorithms from Numerical Analysis (9th Edition) by Burden and Faires, implemented in C++ with Python bindings."
 readme = "README.md"
+dependencies = [
+	"pybind11",
+	"numpy",
+]
 
 [project.urls]
 Homepage = "https://github.com/bwhewe-13/NumericalAnalysis"

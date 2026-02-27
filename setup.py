@@ -13,6 +13,7 @@ setup(
     include_package_data=True,
     install_requires=[
         "numpy",
+        "pybind11",
     ],
     extras_require={
         "dev": [
