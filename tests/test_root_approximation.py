@@ -38,3 +38,33 @@ def test_fixed_point_02():
     approx = numeric.root_approximation.fixed_point(function, 1.0)
     reference = 1.41421356237310
     assert abs(approx - reference) < 1e-8
+
+
+@pytest.mark.smoke
+def test_first_derivative_01():
+    def function(x):
+        return x**2
+
+    approx = numeric.root_approximation.first_derivative(function, 2.0)
+    reference = 4.0
+    assert abs(approx - reference) < 1e-3
+
+
+def test_newton_method_01():
+    def function(x):
+        return x**2 - 2
+
+    approx = numeric.root_approximation.newton_method(function, 1.0)
+    reference = 1.41421356237310
+    assert abs(approx - reference) < 1e-8
+
+
+@pytest.mark.parametrize(
+    "function_name",
+    ["bisection", "fixed_point", "first_derivative", "newton_method"],
+)
+def test_binding_docstrings_include_numpy_sections(function_name):
+    doc = getattr(numeric.root_approximation, function_name).__doc__
+    assert doc is not None
+    assert "Parameters" in doc
+    assert "Returns" in doc

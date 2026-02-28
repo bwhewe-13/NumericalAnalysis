@@ -42,3 +42,23 @@ TEST_CASE("fixed point approximates sqrt2", "[fixed_point]") {
 
     REQUIRE(std::abs(approx - reference) < 1e-8);
 }
+
+TEST_CASE("first derivative approximates quadratic slope", "[first_derivative]") {
+    const std::function<double(double)> function = [](double x) {
+        return x * x;
+    };
+    const double approx = first_derivative(function, 2.0, 1e-3);
+    const double reference = 4.0;
+
+    REQUIRE(std::abs(approx - reference) < 1e-3);
+}
+
+TEST_CASE("newton method approximates sqrt2", "[newton_method]") {
+    const std::function<double(double)> function = [](double x) {
+        return x * x - 2.0;
+    };
+    const double approx = newton_method(function, 1.0, 100, 1e-8);
+    const double reference = 1.41421356237310;
+
+    REQUIRE(std::abs(approx - reference) < 1e-8);
+}

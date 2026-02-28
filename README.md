@@ -1,7 +1,11 @@
-## NumericalAnalysis
+# NumericalAnalysis
 
 [![Python Tests](https://github.com/bwhewe-13/NumericalAnalysis/actions/workflows/python-tests.yml/badge.svg)](https://github.com/bwhewe-13/NumericalAnalysis/actions/workflows/python-tests.yml)
 [![C++ Tests](https://github.com/bwhewe-13/NumericalAnalysis/actions/workflows/cpp-tests.yml/badge.svg)](https://github.com/bwhewe-13/NumericalAnalysis/actions/workflows/cpp-tests.yml)
+[![Quality Gates](https://github.com/bwhewe-13/NumericalAnalysis/actions/workflows/quality-gates.yml/badge.svg)](https://github.com/bwhewe-13/NumericalAnalysis/actions/workflows/quality-gates.yml)
+[![codecov](https://codecov.io/gh/bwhewe-13/NumericalAnalysis/graph/badge.svg)](https://codecov.io/gh/bwhewe-13/NumericalAnalysis)
+![License](https://img.shields.io/github/license/bwhewe-13/NumericalAnalysis)
+![Python](https://img.shields.io/badge/python-3.9%20%7C%203.10%20%7C%203.11%20%7C%203.12%20%7C%203.13-blue)
 
 This project implements numerical methods from *Numerical Analysis* (9th Edition) by Richard L. Burden and J. Douglas Faires.
 

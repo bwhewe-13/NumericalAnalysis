@@ -99,3 +99,69 @@ double fixed_point(
 
     return x;
 }
+
+/**
+ * @brief First Derivative Point Approximation
+ *
+ * @param func Continuous function f(x).
+ * @param x Initial approximation.
+ * @param epsilon Small perturbation for numerical derivative.
+ * @return Approximate first derivative of f at x.
+ */
+double first_derivative(
+    const std::function<double(double)>& func,
+    double x,
+    double epsilon
+){
+    double numerator = func(x + epsilon) - func(x - epsilon);
+    double denominator = 2 * epsilon;
+    return numerator / denominator;
+}
+
+/**
+ * @brief Approximate a root of f(x) = 0 using the Newton-Raphson method. Algorithm
+ * 2.3 in "Numerical Analysis".
+ *
+ * @param func Continuous function f(x).
+ * @param x0 Initial approximation.
+ * @param MAX_ITERS Maximum number of iterations.
+ * @param TOL Convergence tolerance.
+ * @return Approximate x to solution f(x) = 0 with initial approximation.
+ */
+double newton_method(
+    const std::function<double(double)>& func,
+    double x0,
+    int MAX_ITERS,
+    double TOL
+){
+    double fdx_x, x;
+
+    // Step 1
+    int iteration = 1;
+
+    // Step 2
+    while (iteration <= MAX_ITERS) {
+        // Step 3
+        fdx_x = first_derivative(func, x0, 1e-3);
+        x = x0 - func(x0) / fdx_x;
+
+        // Step 4
+        if (std::abs(x - x0) < TOL) {
+            return x;
+        }
+
+        // Step 5
+        iteration += 1;
+
+        // Step 6
+        x0 = x;
+    }
+
+    // Step 7
+    std::cerr << "Newton's Method not converged after " << MAX_ITERS << " iterations. "
+              << "Final tolerance is " << std::abs(x - x0) << std::endl;
+    return x;
+}
+
+
+
