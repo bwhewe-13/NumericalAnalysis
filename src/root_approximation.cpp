@@ -162,6 +162,3 @@ double newton_method(
               << "Final tolerance is " << std::abs(x - x0) << std::endl;
     return x;
 }
-
-
-

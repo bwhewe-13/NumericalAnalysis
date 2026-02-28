@@ -67,5 +67,3 @@ double newton_method(
     int MAX_ITERS,
     double TOL
 );
-
-
