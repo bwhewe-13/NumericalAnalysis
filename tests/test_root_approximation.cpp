@@ -62,3 +62,51 @@ TEST_CASE("newton method approximates sqrt2", "[newton_method]") {
 
     REQUIRE(std::abs(approx - reference) < 1e-8);
 }
+
+TEST_CASE("secant method approximates root of cos(x) - x", "[secant_method]") {
+    const std::function<double(double)> function = [](double x) {
+        return std::cos(x) - x;
+    };
+    const double p0 = 0.5;
+    const double p1 = 0.25 * M_PI;
+    const double approx = secant_method(function, p0, p1, 100, 1e-8);
+    const double reference = 0.73908513321516064166;
+
+    REQUIRE(std::abs(approx - reference) < 1e-8);
+}
+
+TEST_CASE("secant method approximates cubic root", "[secant_method]") {
+    const std::function<double(double)> function = [](double x) {
+        return x * x * x + 4.0 * x * x - 10.0;
+    };
+    const double p0 = 1.0;
+    const double p1 = 2.0;
+    const double approx = secant_method(function, p0, p1, 100, 1e-8);
+    const double reference = 1.36523001341410;
+
+    REQUIRE(std::abs(approx - reference) < 1e-8);
+}
+
+TEST_CASE("false position approximates root of cos(x) - x", "[false_position]") {
+    const std::function<double(double)> function = [](double x) {
+        return std::cos(x) - x;
+    };
+    const double p0 = 0.5;
+    const double p1 = 0.25 * M_PI;
+    const double approx = false_position(function, p0, p1, 100, 1e-8);
+    const double reference = 0.73908513321516064166;
+
+    REQUIRE(std::abs(approx - reference) < 1e-8);
+}
+
+TEST_CASE("false position approximates cubic root", "[false_position]") {
+    const std::function<double(double)> function = [](double x) {
+        return x * x * x + 4.0 * x * x - 10.0;
+    };
+    const double p0 = 1.0;
+    const double p1 = 2.0;
+    const double approx = false_position(function, p0, p1, 100, 1e-8);
+    const double reference = 1.36523001341410;
+
+    REQUIRE(std::abs(approx - reference) < 1e-8);
+}   

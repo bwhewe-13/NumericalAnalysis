@@ -1,5 +1,24 @@
+import math
+
 import numeric
 import pytest
+
+
+@pytest.mark.parametrize(
+    "function_name",
+    [
+        "bisection",
+        "fixed_point",
+        "first_derivative",
+        "newton_method",
+        "secant_method",
+    ],
+)
+def test_binding_docstrings_include_numpy_sections(function_name):
+    doc = getattr(numeric.root_approximation, function_name).__doc__
+    assert doc is not None
+    assert "Parameters" in doc
+    assert "Returns" in doc
 
 
 @pytest.mark.smoke
@@ -59,12 +78,45 @@ def test_newton_method_01():
     assert abs(approx - reference) < 1e-8
 
 
-@pytest.mark.parametrize(
-    "function_name",
-    ["bisection", "fixed_point", "first_derivative", "newton_method"],
-)
-def test_binding_docstrings_include_numpy_sections(function_name):
-    doc = getattr(numeric.root_approximation, function_name).__doc__
-    assert doc is not None
-    assert "Parameters" in doc
-    assert "Returns" in doc
+@pytest.mark.smoke
+def test_secant_method_01():
+    def function(x):
+        return math.cos(x) - x
+
+    p0 = 0.5
+    p1 = 0.25 * math.pi
+    approx = numeric.root_approximation.secant_method(function, p0, p1)
+    reference = 0.73908513321516064166
+    assert abs(approx - reference) < 1e-8
+
+
+def test_secant_method_02():
+    def function(x):
+        return x**3 + 4 * x**2 - 10
+
+    p0 = 1.0
+    p1 = 2.0
+    approx = numeric.root_approximation.secant_method(function, p0, p1)
+    reference = 1.36523001341410
+    assert abs(approx - reference) < 1e-8
+
+
+@pytest.mark.smoke
+def test_false_position_01():
+    def function(x):
+        return math.cos(x) - x
+
+    p0 = 0.5
+    p1 = 0.25 * math.pi
+    approx = numeric.root_approximation.false_position(function, p0, p1)
+    reference = 0.73908513321516064166
+    assert abs(approx - reference) < 1e-8
+
+
+def test_false_position_02():
+    def function(x):
+        return x**3 + 4 * x**2 - 10
+
+    approx = numeric.root_approximation.false_position(function, 1, 2)
+    reference = 1.36523001341410
+    assert abs(approx - reference) < 1e-8

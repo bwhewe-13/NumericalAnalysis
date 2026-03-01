@@ -123,4 +123,64 @@ float
         py::arg("max_iters") = 100,
         py::arg("tol") = 1e-8
     );
+
+    /**
+     * @brief Bind the Secant root approximation function to Python.
+     */
+    m.def(
+        "secant_method",
+        &secant_method,
+        R"pbdoc(
+secant_method(func, x0, x1, max_iters=100, tol=1e-8)
+
+Approximate a root using the secant method from initial approximations x0 and x1.
+
+Parameters
+----------
+func : Callable[[float], float]
+x0 : float
+x1 : float
+max_iters : int, optional
+tol : float, optional
+
+Returns
+-------
+float
+)pbdoc",
+        py::arg("func"),
+        py::arg("x0"),
+        py::arg("x1"),
+        py::arg("max_iters") = 100,
+        py::arg("tol") = 1e-8
+    );
+
+    /**
+     * @brief Bind the false position root approximation function to Python.
+     */
+    m.def(
+        "false_position",
+        &false_position,
+        R"pbdoc(
+false_position(func, x0, x1, max_iters=100, tol=1e-8)
+
+Approximate a root using the false position method from initial approximations x0 and x1.
+
+Parameters
+----------
+func : Callable[[float], float]
+x0 : float
+x1 : float
+max_iters : int, optional
+tol : float, optional
+
+Returns
+-------
+float
+)pbdoc",
+        py::arg("func"),
+        py::arg("x0"),
+        py::arg("x1"),
+        py::arg("max_iters") = 100,
+        py::arg("tol") = 1e-8
+    );
 }

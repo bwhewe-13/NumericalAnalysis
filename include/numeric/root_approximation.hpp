@@ -67,3 +67,41 @@ double newton_method(
     int MAX_ITERS,
     double TOL
 );
+
+/**
+ * @brief Approximate a root of f(x) = 0 using the secant method. Algorithm
+ * 2.4 in "Numerical Analysis".
+ *
+ * @param func Continuous function f(x).
+ * @param x0 First initial approximation.
+ * @param x1 Second initial approximation.
+ * @param MAX_ITERS Maximum number of iterations.
+ * @param TOL Convergence tolerance.
+ * @return Approximate x to solution f(x) = 0 with initial approximations.
+ */
+double secant_method(
+    const std::function<double(double)>& func,
+    double x0,
+    double x1,
+    int MAX_ITERS,
+    double TOL
+);
+
+/**
+ * @brief Approximate a root of f(x) = 0 using the false position method. Algorithm
+ * 2.5 in "Numerical Analysis".
+ *
+ * @param func Continuous function f(x).
+ * @param x0 First initial approximation.
+ * @param x1 Second initial approximation.
+ * @param MAX_ITERS Maximum number of iterations.
+ * @param TOL Convergence tolerance.
+ * @return Approximate x to solution f(x) = 0 with initial approximations.
+ */
+double false_position(
+    const std::function<double(double)>& func,
+    double x0,
+    double x1,
+    int MAX_ITERS,
+    double TOL
+);

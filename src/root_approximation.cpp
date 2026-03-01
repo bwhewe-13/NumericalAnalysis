@@ -162,3 +162,111 @@ double newton_method(
               << "Final tolerance is " << std::abs(x - x0) << std::endl;
     return x;
 }
+
+/**
+ * @brief Approximate a root of f(x) = 0 using the secant method. Algorithm
+ * 2.4 in "Numerical Analysis".
+ *
+ * @param func Continuous function f(x).
+ * @param x0 First initial approximation.
+ * @param x1 Second initial approximation.
+ * @param MAX_ITERS Maximum number of iterations.
+ * @param TOL Convergence tolerance.
+ * @return Approximate x to solution f(x) = 0 with initial approximations.
+ */
+double secant_method(
+    const std::function<double(double)>& func,
+    double x0,
+    double x1,
+    int MAX_ITERS,
+    double TOL
+){
+    double f_x0, f_x1, x;
+
+    // Step 1
+    int iteration = 2;
+    f_x0 = func(x0);
+    f_x1 = func(x1);
+
+    // Step 2
+    while (iteration <= MAX_ITERS) {
+        // Step 3
+        x = x1 - f_x1 * (x1 - x0) / (f_x1 - f_x0);
+
+        // Step 4
+        if (std::abs(x - x1) < TOL) {
+            return x;
+        }
+
+        // Step 5
+        iteration += 1;
+
+        // Step 6
+        x0 = x1;
+        x1 = x;
+        f_x0 = f_x1;
+        f_x1 = func(x);
+    }
+
+    // Step 7
+    std::cerr << "Secant Method not converged after " << MAX_ITERS << " iterations. "
+              << "Final tolerance is " << std::abs(x - x1) << std::endl;
+    return x;
+
+}
+
+/**
+ * @brief Approximate a root of f(x) = 0 using the false position method. Algorithm
+ * 2.5 in "Numerical Analysis".
+ *
+ * @param func Continuous function f(x).
+ * @param x0 First initial approximation.
+ * @param x1 Second initial approximation.
+ * @param MAX_ITERS Maximum number of iterations.
+ * @param TOL Convergence tolerance.
+ * @return Approximate x to solution f(x) = 0 with initial approximations.
+ */
+double false_position(
+    const std::function<double(double)>& func,
+    double x0,
+    double x1,
+    int MAX_ITERS,
+    double TOL
+){
+    double f_x0, f_x1, x, f_x;
+
+    // Step 1
+    int iteration = 2;
+    f_x0 = func(x0);
+    f_x1 = func(x1);
+
+    // Step 2
+    while (iteration <= MAX_ITERS) {
+        // Step 3
+        x = x0 - f_x0 * (x1 - x0) / (f_x1 - f_x0);
+
+        // Step 4
+        if (std::abs(x - x1) < TOL) {
+            return x;
+        }
+
+        // Step 5
+        iteration += 1;
+        f_x = func(x0);
+
+        // Step 6
+        if (f_x1 * f_x < 0) {
+            x0 = x1;
+            f_x0 = f_x1;
+        }
+
+        // Step 7
+        x1 = x;
+        f_x1 = func(x);
+    }
+
+    // Step 8
+    std::cerr << "False Position Method not converged after " << MAX_ITERS << " iterations. "
+              << "Final tolerance is " << std::abs(f_x) << std::endl;
+    return x;
+}
