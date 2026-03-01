@@ -109,4 +109,4 @@ TEST_CASE("false position approximates cubic root", "[false_position]") {
     const double reference = 1.36523001341410;
 
     REQUIRE(std::abs(approx - reference) < 1e-8);
-}   
+}
