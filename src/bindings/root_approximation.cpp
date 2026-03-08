@@ -183,4 +183,32 @@ float
         py::arg("max_iters") = 100,
         py::arg("tol") = 1e-8
     );
+
+    /**
+     * @brief Bind the Steffensen's method root approximation function to Python.
+     */
+    m.def(
+        "steffensen_method",
+        &steffensen_method,
+        R"pbdoc(
+steffensen_method(func, x0, max_iters=100, tol=1e-8)
+
+Approximate a root using Steffensen's method from initial approximation x0.
+
+Parameters
+----------
+func : Callable[[float], float]
+x0 : float
+max_iters : int, optional
+tol : float, optional
+
+Returns
+-------
+float
+)pbdoc",
+        py::arg("func"),
+        py::arg("x0"),
+        py::arg("max_iters") = 100,
+        py::arg("tol") = 1e-8
+    );
 }

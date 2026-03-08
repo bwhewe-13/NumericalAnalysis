@@ -120,3 +120,22 @@ def test_false_position_02():
     approx = numeric.root_approximation.false_position(function, 1, 2)
     reference = 1.36523001341410
     assert abs(approx - reference) < 1e-8
+
+
+@pytest.mark.smoke
+def test_steffensen_method_01():
+    def function(x):
+        return (10 / (x + 4)) ** (0.5)
+
+    approx = numeric.root_approximation.steffensen_method(function, 1.5)
+    reference = 1.36523001341409684576
+    assert abs(approx - reference) < 1e-8
+
+
+def test_steffensen_method_02():
+    def function(x):
+        return 0.5 * (10 - x**3) ** (0.5)
+
+    approx = numeric.root_approximation.steffensen_method(function, 1.5)
+    reference = function(approx)
+    assert abs(approx - reference) < 1e-8

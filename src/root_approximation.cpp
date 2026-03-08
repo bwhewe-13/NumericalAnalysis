@@ -270,3 +270,48 @@ double false_position(
               << "Final tolerance is " << std::abs(f_x) << std::endl;
     return x;
 }
+
+/**
+ * @brief Find a solution to f(x) = x using Steffensen's method. Algorithm
+ * 2.6 in "Numerical Analysis".
+ *
+ * @param func Continuous function f(x).
+ * @param x0 First initial approximation.
+ * @param MAX_ITERS Maximum number of iterations.
+ * @param TOL Convergence tolerance.
+ * @return Approximate x to solution f(x) = 0.
+ */
+double steffensen_method(
+    const std::function<double(double)>& func,
+    double x0,
+    int MAX_ITERS,
+    double TOL
+){
+    double x1, x2, x;
+
+    // Step 1
+    int iteration = 1;
+
+    // Step 2
+    while (iteration <= MAX_ITERS) {
+        // Step 3
+        x1 = func(x0);
+        x2 = func(x1);
+        x = x0 - (x1 - x0) * (x1 - x0) / (x2 - 2 * x1 + x0);
+
+        // Step 4
+        if (std::abs(x - x0) < TOL) {
+            return x;
+        }
+
+        // Step 5
+        iteration += 1;
+
+        // Step 6
+        x0 = x;
+    }
+    // Step 7
+    std::cerr << "Steffensen's Method not converged after " << MAX_ITERS << " iterations. "
+              << "Final tolerance is " << std::abs(x - x0) << std::endl;
+    return x;
+}

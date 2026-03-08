@@ -110,3 +110,23 @@ TEST_CASE("false position approximates cubic root", "[false_position]") {
 
     REQUIRE(std::abs(approx - reference) < 1e-8);
 }
+
+TEST_CASE("steffensen method approximates transformed cubic root", "[steffensen_method]") {
+    const std::function<double(double)> function = [](double x) {
+        return std::sqrt(10.0 / (x + 4.0));
+    };
+    const double approx = steffensen_method(function, 1.5, 100, 1e-8);
+    const double reference = 1.36523001341409684576;
+
+    REQUIRE(std::abs(approx - reference) < 1e-8);
+}
+
+TEST_CASE("steffensen method converges for transformed cubic fixed-point map", "[steffensen_method]") {
+    const std::function<double(double)> function = [](double x) {
+        return 0.5 * std::sqrt(10.0 - x * x * x);
+    };
+    const double approx = steffensen_method(function, 1.5, 100, 1e-8);
+    const double reference = function(approx);
+
+    REQUIRE(std::abs(approx - reference) < 1e-8);
+}

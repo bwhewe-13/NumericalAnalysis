@@ -105,3 +105,20 @@ double false_position(
     int MAX_ITERS,
     double TOL
 );
+
+/**
+ * @brief Find a solution to f(x) = x using Steffensen's method. Algorithm
+ * 2.6 in "Numerical Analysis".
+ *
+ * @param func Continuous function f(x).
+ * @param x0 First initial approximation.
+ * @param MAX_ITERS Maximum number of iterations.
+ * @param TOL Convergence tolerance.
+ * @return Approximate x to solution f(x) = 0.
+ */
+double steffensen_method(
+    const std::function<double(double)>& func,
+    double x0,
+    int MAX_ITERS,
+    double TOL
+);
