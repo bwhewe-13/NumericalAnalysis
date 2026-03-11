@@ -9,6 +9,7 @@ ROOT = Path(__file__).resolve().parents[1]
 SCAN_DIRS = [ROOT / "include", ROOT / "src"]
 SUFFIXES = {".hpp", ".h", ".cpp", ".cc", ".cxx"}
 CONTROL_KEYWORDS = {"if", "for", "while", "switch", "catch"}
+NON_SIGNATURE_KEYWORDS = {"return", "throw", "co_return"}
 FUNCTION_START_RE = re.compile(r"^(?:[\w:<>~*&]+\s+)+[A-Za-z_]\w*\s*\(")
 
 
@@ -36,6 +37,11 @@ def is_candidate_signature(signature: str) -> bool:
     if any(
         text.startswith(keyword + " ") or text.startswith(keyword + "(")
         for keyword in CONTROL_KEYWORDS
+    ):
+        return False
+    if any(
+        text.startswith(keyword + " ") or text.startswith(keyword + "(")
+        for keyword in NON_SIGNATURE_KEYWORDS
     ):
         return False
     if text.endswith(";") and "typedef" in text:
