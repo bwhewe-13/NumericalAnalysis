@@ -125,9 +125,9 @@ double steffensen_method(
 );
 
 /**
- * @brief Evaluate the polynomial P(x) and its derivative at x0 using Horner's 
+ * @brief Evaluate the polynomial P(x) and its derivative at x0 using Horner's
  * method. Algorithm 2.7 in "Numerical Analysis".
- * 
+ *
  * @param n The degree of the polynomial.
  * @param coefs List of length n+1 of polynomial coefficients.
  * @param x0 Value that is being evaluated.
@@ -136,7 +136,7 @@ double steffensen_method(
 std::tuple<double, double> horners(int n, const double coefs[], double x0);
 
 /**
- * @brief Find a solution to f(x) = 0 given 3 approximations using Muller's 
+ * @brief Find a solution to f(x) = 0 given 3 approximations using Muller's
  * method. Algorithm 2.8 in "Numerical Analysis".
  *
  * @param func Continuous function f(x).
