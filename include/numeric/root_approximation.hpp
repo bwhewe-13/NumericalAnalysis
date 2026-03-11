@@ -1,5 +1,6 @@
 #pragma once
 #include <functional>
+#include <tuple>
 
 /**
  * @brief Approximate a root of f(x) = 0 using the bisection method. Algorithm
@@ -119,6 +120,38 @@ double false_position(
 double steffensen_method(
     const std::function<double(double)>& func,
     double x0,
+    int MAX_ITERS,
+    double TOL
+);
+
+/**
+ * @brief Evaluate the polynomial P(x) and its derivative at x0 using Horner's 
+ * method. Algorithm 2.7 in "Numerical Analysis".
+ * 
+ * @param n The degree of the polynomial.
+ * @param coefs List of length n+1 of polynomial coefficients.
+ * @param x0 Value that is being evaluated.
+ * @return Tuple of the polynomial and derivative at x0.
+ */
+std::tuple<double, double> horners(int n, const double coefs[], double x0);
+
+/**
+ * @brief Find a solution to f(x) = 0 given 3 approximations using Muller's 
+ * method. Algorithm 2.8 in "Numerical Analysis".
+ *
+ * @param func Continuous function f(x).
+ * @param p0 First initial approximation.
+ * @param p1 Second initial approximation.
+ * @param p2 Third initial approximation.
+ * @param MAX_ITERS Maximum number of iterations.
+ * @param TOL Convergence tolerance.
+ * @return Approximate x to solution f(x) = 0.
+ */
+double mullers(
+    const std::function<double(double)>& func,
+    double p0,
+    double p1,
+    double p2,
     int MAX_ITERS,
     double TOL
 );

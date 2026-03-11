@@ -1,5 +1,6 @@
 #include <cmath>
 #include <functional>
+#include <stdexcept>
 
 #include <catch2/catch_test_macros.hpp>
 
@@ -129,4 +130,43 @@ TEST_CASE("steffensen method converges for transformed cubic fixed-point map", "
     const double reference = function(approx);
 
     REQUIRE(std::abs(approx - reference) < 1e-8);
+}
+
+TEST_CASE("horners evaluates polynomial and derivative case 1", "[horners]") {
+    const double coefs[] = {2.0, 0.0, -3.0, 3.0, -4.0};
+    const auto [poly_value, derivative_value] = horners(4, coefs, -2.0);
+
+    REQUIRE(std::abs(poly_value - 10.0) < 1e-12);
+    REQUIRE(std::abs(derivative_value - (-49.0)) < 1e-12);
+}
+
+TEST_CASE("horners evaluates polynomial and derivative case 2", "[horners]") {
+    const double coefs[] = {2.0, -6.0, 2.0, -1.0};
+    const auto [poly_value, derivative_value] = horners(3, coefs, 3.0);
+
+    REQUIRE(std::abs(poly_value - 5.0) < 1e-12);
+    REQUIRE(std::abs(derivative_value - 20.0) < 1e-12);
+}
+
+TEST_CASE("horners throws for negative degree", "[horners]") {
+    const double coefs[] = {1.0};
+    REQUIRE_THROWS_AS(horners(-1, coefs, 0.0), std::invalid_argument);
+}
+
+TEST_CASE("mullers approximates cubic root", "[mullers]") {
+    const std::function<double(double)> function = [](double x) {
+        return x * x * x + 4.0 * x * x - 10.0;
+    };
+    const double approx = mullers(function, 1.0, 1.5, 2.0, 100, 1e-8);
+    const double reference = 1.36523001341410;
+
+    REQUIRE(std::abs(approx - reference) < 1e-8);
+}
+
+TEST_CASE("mullers throws for duplicate initial points", "[mullers]") {
+    const std::function<double(double)> function = [](double x) {
+        return x * x - 2.0;
+    };
+
+    REQUIRE_THROWS_AS(mullers(function, 1.0, 1.0, 2.0, 100, 1e-8), std::invalid_argument);
 }

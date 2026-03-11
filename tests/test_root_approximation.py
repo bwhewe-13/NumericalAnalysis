@@ -12,6 +12,8 @@ import pytest
         "first_derivative",
         "newton_method",
         "secant_method",
+        "mullers",
+        "horners",
     ],
 )
 def test_binding_docstrings_include_numpy_sections(function_name):
@@ -69,6 +71,7 @@ def test_first_derivative_01():
     assert abs(approx - reference) < 1e-3
 
 
+@pytest.mark.smoke
 def test_newton_method_01():
     def function(x):
         return x**2 - 2
@@ -139,3 +142,44 @@ def test_steffensen_method_02():
     approx = numeric.root_approximation.steffensen_method(function, 1.5)
     reference = function(approx)
     assert abs(approx - reference) < 1e-8
+
+
+@pytest.mark.smoke
+def test_horners_01():
+    an = [2, 0, -3, 3, -4]
+    x0 = -2
+    poly_value, derivative_value = numeric.root_approximation.horners(an, x0)
+
+    assert abs(poly_value - 10.0) < 1e-12
+    assert abs(derivative_value - -49.0) < 1e-12
+
+
+def test_horners_02():
+    coefs = [2.0, -6.0, 2.0, -1.0]
+    poly_value, derivative_value = numeric.root_approximation.horners(coefs, 3.0)
+
+    assert abs(poly_value - 5.0) < 1e-12
+    assert abs(derivative_value - 20.0) < 1e-12
+
+
+def test_horners_03_error_empty_coefficients():
+    with pytest.raises(ValueError, match="coefs must have at least one coefficient"):
+        numeric.root_approximation.horners([], 1.0)
+
+
+@pytest.mark.smoke
+def test_mullers_01():
+    def function(x):
+        return x**3 + 4 * x**2 - 10
+
+    approx = numeric.root_approximation.mullers(function, 1.0, 1.5, 2.0)
+    reference = 1.36523001341410
+    assert abs(approx - reference) < 1e-8
+
+
+def test_mullers_02_error_duplicate_initial_points():
+    def function(x):
+        return x**2 - 2
+
+    with pytest.raises(ValueError, match="distinct initial approximations"):
+        numeric.root_approximation.mullers(function, 1.0, 1.0, 2.0)

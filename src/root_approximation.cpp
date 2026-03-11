@@ -1,4 +1,7 @@
+#include <cmath>
 #include <iostream>
+#include <stdexcept>
+#include <tuple>
 #include "numeric/root_approximation.hpp"
 
 /**
@@ -314,4 +317,124 @@ double steffensen_method(
     std::cerr << "Steffensen's Method not converged after " << MAX_ITERS << " iterations. "
               << "Final tolerance is " << std::abs(x - x0) << std::endl;
     return x;
+}
+
+/**
+ * @brief Evaluate the polynomial P(x) and its derivative at x0 using Horner's 
+ * method. Algorithm 2.7 in "Numerical Analysis".
+ * 
+ * @param n The degree of the polynomial.
+ * @param coefs List of length n+1 of polynomial coefficients.
+ * @param x0 Value that is being evaluated.
+ * @return Tuple of the polynomial and derivative at x0.
+ */
+std::tuple<double, double> horners(int n, const double coefs[], double x0){
+    if (n < 0) {
+        throw std::invalid_argument("Horner's expects non-negative polynomial degree");
+    }
+
+    if (n == 0) {
+        return {coefs[0], 0.0};
+    }
+
+    // Step 1
+    double y = coefs[0];
+    double z = coefs[0];
+
+    // Step 2
+    for (int jj = 1; jj < n; jj++) {
+        y = x0 * y + coefs[jj];
+        z = x0 * z + y;
+    }
+
+    // Step 3
+    y = x0 * y + coefs[n];
+
+    // Step 4
+    return {y, z};
+}
+
+/**
+ * @brief Find a solution to f(x) = 0 given 3 approximations using Muller's 
+ * method. Algorithm 2.8 in "Numerical Analysis".
+ *
+ * @param func Continuous function f(x).
+ * @param p0 First initial approximation.
+ * @param p1 Second initial approximation.
+ * @param p2 Third initial approximation.
+ * @param MAX_ITERS Maximum number of iterations.
+ * @param TOL Convergence tolerance.
+ * @return Approximate x to solution f(x) = 0.
+ */
+double mullers(
+    const std::function<double(double)>& func,
+    double p0,
+    double p1,
+    double p2,
+    int MAX_ITERS,
+    double TOL
+){
+    double p, b, D, E, h;
+
+    // Step 1
+    double h1 = p1 - p0;
+    double h2 = p2 - p1;
+    if (h1 == 0.0 || h2 == 0.0 || (h2 + h1) == 0.0) {
+        throw std::invalid_argument("Muller's method requires distinct initial approximations");
+    }
+
+    double d1 = (func(p1) - func(p0)) / h1;
+    double d2 = (func(p2) - func(p1)) / h2;
+    double d = (d2 - d1) / (h2 + h1);
+    int iteration = 3;
+
+    // Step 2
+    while (iteration <= MAX_ITERS){
+        // Step 3
+        b = d2 + h2 * d;
+        const double f_p2 = func(p2);
+        const double discriminant = std::pow(b, 2) - 4 * f_p2 * d;
+        if (discriminant < 0.0) {
+            throw std::runtime_error("Muller's method encountered a complex discriminant");
+        }
+        D = std::sqrt(discriminant);
+        
+        // Step 4
+        if (std::abs(b - D) < std::abs(b + D)){
+            E = b + D;
+        } else {
+            E = b - D;
+        }
+        
+        // Step 5
+        if (E == 0.0) {
+            throw std::runtime_error("Muller's method encountered zero denominator");
+        }
+        h = -2 * f_p2 / E;
+        p = p2 + h;
+        
+        // Step 6
+
+        if (std::abs(h) < TOL){
+            return p;
+        }
+        
+        // Step 7
+        p0 = p1; 
+        p1 = p2; 
+        p2 = p;
+        h1 = p1 - p0;
+        h2 = p2 - p1;
+        if (h1 == 0.0 || h2 == 0.0 || (h2 + h1) == 0.0) {
+            throw std::runtime_error("Muller's method encountered degenerate interpolation points");
+        }
+        d1 = (func(p1) - func(p0))/h1;
+        d2 = (func(p2) - func(p1))/h2;
+        d = (d2 - d1)/(h2 + h1);
+        iteration += 1;
+    }
+
+    // Step 8
+    std::cerr << "Muller's Method failed after " << MAX_ITERS << " iterations." << std::endl;
+    return p;
 }

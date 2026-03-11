@@ -1,5 +1,10 @@
 #include <pybind11/pybind11.h>
 #include <pybind11/functional.h>
+#include <pybind11/stl.h>
+
+#include <stdexcept>
+#include <vector>
+
 #include "numeric/root_approximation.hpp"
 
 namespace py = pybind11;
@@ -210,5 +215,68 @@ float
         py::arg("x0"),
         py::arg("max_iters") = 100,
         py::arg("tol") = 1e-8
+    );
+
+    /**
+     * @brief Bind Muller's root approximation function to Python.
+     */
+    m.def(
+        "mullers",
+        &mullers,
+        R"pbdoc(
+mullers(func, p0, p1, p2, max_iters=100, tol=1e-8)
+
+Approximate a root using Muller's method from three initial approximations.
+
+Parameters
+----------
+func : Callable[[float], float]
+p0 : float
+p1 : float
+p2 : float
+max_iters : int, optional
+tol : float, optional
+
+Returns
+-------
+float
+)pbdoc",
+        py::arg("func"),
+        py::arg("p0"),
+        py::arg("p1"),
+        py::arg("p2"),
+        py::arg("max_iters") = 100,
+        py::arg("tol") = 1e-8
+    );
+
+    /**
+     * @brief Bind Horner's polynomial and derivative evaluation to Python.
+     */
+    m.def(
+        "horners",
+        [](const std::vector<double>& coefs, double x0) {
+            if (coefs.empty()) {
+                throw std::invalid_argument("coefs must have at least one coefficient");
+            }
+            return horners(static_cast<int>(coefs.size()) - 1, coefs.data(), x0);
+        },
+        R"pbdoc(
+horners(coefs, x0)
+
+Evaluate polynomial value and derivative at x0 using Horner's method.
+
+Parameters
+----------
+coefs : Sequence[float]
+    Polynomial coefficients from highest to lowest degree.
+x0 : float
+
+Returns
+-------
+tuple[float, float]
+    (P(x0), P'(x0))
+)pbdoc",
+        py::arg("coefs"),
+        py::arg("x0")
     );
 }
