@@ -163,7 +163,7 @@ def test_horners_02():
 
 
 def test_horners_03_error_empty_coefficients():
-    err_str = "coefs must be at least one coefficient"
+    err_str = "coefs must have at least one coefficient"
     with pytest.raises(ValueError, match=err_str):
         numeric.root_approximation.horners([], 1.0)
 

@@ -60,6 +60,23 @@ if(BUILD_PYTHON_BINDINGS)
     target_link_libraries(root_approximation PRIVATE Python3::Module)
 
     install(TARGETS root_approximation DESTINATION numeric)
+
+    pybind11_add_module(interpolation
+        src/bindings/interpolation.cpp
+        src/interpolation.cpp
+    )
+
+    target_include_directories(interpolation
+        PUBLIC
+            $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+            $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
+        PRIVATE
+            ${Python3_INCLUDE_DIRS}
+    )
+
+    target_link_libraries(interpolation PRIVATE Python3::Module)
+
+    install(TARGETS interpolation DESTINATION numeric)
 endif()
 
 install(DIRECTORY include/ DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
@@ -90,6 +107,22 @@ if(BUILD_TESTING)
             Catch2::Catch2WithMain
     )
 
+    add_executable(test_interpolation_cpp
+        tests/test_interpolation.cpp
+        src/interpolation.cpp
+    )
+
+    target_include_directories(test_interpolation_cpp
+        PRIVATE
+            ${CMAKE_CURRENT_SOURCE_DIR}/include
+    )
+
+    target_link_libraries(test_interpolation_cpp
+        PRIVATE
+            Catch2::Catch2WithMain
+    )
+
     include(Catch)
     catch_discover_tests(test_root_approximation_cpp)
+    catch_discover_tests(test_interpolation_cpp)
 endif()

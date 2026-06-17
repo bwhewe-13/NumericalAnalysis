@@ -18,5 +18,5 @@ else
 fi
 
 cmake "${cmake_args[@]}"
-cmake --build "$build_dir" --target test_root_approximation_cpp
-ctest --test-dir "$build_dir" --output-on-failure -R test_root_approximation_cpp
+cmake --build "$build_dir"
+ctest --test-dir "$build_dir" --output-on-failure

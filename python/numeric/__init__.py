@@ -3,6 +3,6 @@
 Core algorithms are implemented in C++ and exposed through Python bindings.
 """
 
-from . import root_approximation
+from . import interpolation, root_approximation
 
-__all__ = ["root_approximation"]
+__all__ = ["root_approximation", "interpolation"]
