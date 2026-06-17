@@ -4,9 +4,9 @@
 #include <vector>
 
 /**
- * @brief Evaluate the interpolating polynomial P on the n + 1 distinct numbers 
- * x0, ..., xn at the number x for the function f using Neville's iterated 
- * interpolation. Algorithm 3.1 in "Numerical Analysis". 
+ * @brief Evaluate the interpolating polynomial P on the n + 1 distinct numbers
+ * x0, ..., xn at the number x for the function f using Neville's iterated
+ * interpolation. Algorithm 3.1 in "Numerical Analysis".
  *
  * @param x The point at which to evaluate the interpolating polynomial.
  * @param xn The x-values of the known data points.
